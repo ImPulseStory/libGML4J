@@ -39,8 +39,16 @@ dependencies {
     implementation("io.github.ImpulseStory:libgml4j:0.1.0")
 }
 
+Gradle with JitPack (Kotlin DSL)
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
+dependencies {
+    implementation("com.github.ImPulseStory:libGML4J:v0.1.0")
+}
+
 Maven
-xml
 
 <dependency>
     <groupId>io.github.ImpulseStory</groupId>
@@ -48,7 +56,23 @@ xml
     <version>0.1.0</version>
 </dependency>
 
-    Note: libGML4J is not yet published. This section will be updated after the first release.
+Maven with JitPack:
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+    
+	<dependency>
+	    <groupId>com.github.ImPulseStory</groupId>
+	    <artifactId>libGML4J</artifactId>
+	    <version>v0.1.0</version>
+	</dependency>
+
+
+
+    Note: libGML4J is not yet published in Maven Central. This section will be updated after the first release.
 
 ⚡ Quick Start
 java
