@@ -27,19 +27,15 @@ markdown
 
 ---
 
+markdown
+
 ## 🚀 Installation
 
-### Gradle (Kotlin DSL)
+### 📦 Gradle (Kotlin DSL)
 
-repositories {
-    mavenCentral()
-}
+**JitPack** — *recommended for now*
 
-dependencies {
-    implementation("io.github.ImpulseStory:libgml4j:0.1.0")
-}
-
-Gradle with JitPack (Kotlin DSL)
+```kotlin
 repositories {
     maven { url = uri("https://jitpack.io") }
 }
@@ -48,32 +44,69 @@ dependencies {
     implementation("com.github.ImPulseStory:libGML4J:v0.1.0")
 }
 
-Maven
+Maven Central — coming soon
+kotlin
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.github.ImPulseStory:libgml4j:0.1.0")
+}
+
+📦 Gradle (Groovy DSL)
+
+JitPack — recommended for now
+groovy
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.ImPulseStory:libGML4J:v0.1.0'
+}
+
+Maven Central — coming soon
+groovy
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.ImPulseStory:libgml4j:0.1.0'
+}
+
+📦 Maven
+
+JitPack — recommended for now
+xml
+
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 
 <dependency>
-    <groupId>io.github.ImpulseStory</groupId>
+    <groupId>com.github.ImPulseStory</groupId>
+    <artifactId>libGML4J</artifactId>
+    <version>v0.1.0</version>
+</dependency>
+
+Maven Central — coming soon
+xml
+
+<dependency>
+    <groupId>io.github.ImPulseStory</groupId>
     <artifactId>libgml4j</artifactId>
     <version>0.1.0</version>
 </dependency>
-
-Maven with JitPack:
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-    
-	<dependency>
-	    <groupId>com.github.ImPulseStory</groupId>
-	    <artifactId>libGML4J</artifactId>
-	    <version>v0.1.0</version>
-	</dependency>
-
-
-
-    Note: libGML4J is not yet published in Maven Central. This section will be updated after the first release.
-
+```
+    ⚠️ Note: libGML4J is not yet published on Maven Central. Until then, please use the JitPack option. This section will be updated after the first Central release.
 ⚡ Quick Start
 java
 
