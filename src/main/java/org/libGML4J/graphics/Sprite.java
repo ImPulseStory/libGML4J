@@ -1,5 +1,11 @@
 package org.libGML4J.graphics;
 
+/*
+ * Copyright (c) 2026 ImPulseStory
+ * ... (полный текст MIT)
+ */
+
+import org.libGML4J.Exceptions.TextureLoadException;
 import org.libGML4J.core.Window;
 import org.libGML4J.gl.Mesh;
 import org.libGML4J.gl.Shader;
@@ -15,17 +21,45 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
+/**
+ * Represents a drawable 2D image, either a full texture or a sub-region of a
+ * tileset.
+ * <p>
+ * A sprite stores its texture ID, position, size, UV coordinates, and optional
+ * transforms (rotation, flip). It can draw itself directly, or be passed to a
+ * {@link SpriteBatch} for batched rendering.
+ * <p>
+ * For tilesets, use {@link #cutTileSet(String, int, int)} to slice a texture
+ * into individual sprites, and {@link #resizeTileSet(Map, int, int)} to scale
+ * them.
+ *
+ * @author ImPulseStory
+ */
 public class Sprite {
-    // Instance fields — each sprite has its own state
+
+    /** OpenGL texture ID for this sprite. */
     private int textureID;
+
+    /** Position and size of the sprite in pixels. */
     private float x, y, w, h;
+
+    /** UV coordinates for the texture region: (u0, v0) top-left, (u1, v1) bottom-right. */
     private float u0 = 0, v0 = 0, u1 = 1, v1 = 1;
+
+    /** Rotation angle in degrees, around the sprite's center. */
     private float rotation = 0;
+
+    /** Whether the sprite is flipped horizontally or vertically. */
     private boolean flipX = false, flipY = false;
 
-    // Shared shader — same for all sprites
+    /** Shared shader used for all sprites. */
     private static final Shader textureShader = new Shader(vertexShaderSrc(), fragmentShaderSrc());
 
+    /**
+     * Returns the vertex shader source code.
+     *
+     * @return the vertex shader source
+     */
     private static String vertexShaderSrc() {
         return "#version 330 core\n" +
                 "layout(location = 0) in vec3 aPos;\n" +
@@ -37,6 +71,11 @@ public class Sprite {
                 "}";
     }
 
+    /**
+     * Returns the fragment shader source code.
+     *
+     * @return the fragment shader source
+     */
     private static String fragmentShaderSrc() {
         return "#version 330 core\n" +
                 "in vec2 fTexCoord;\n" +
@@ -47,7 +86,15 @@ public class Sprite {
                 "}";
     }
 
-    // Constructor for a full texture
+    /**
+     * Creates a sprite from a full texture.
+     *
+     * @param textureID the OpenGL texture ID
+     * @param x         the x position in pixels
+     * @param y         the y position in pixels
+     * @param w         the width in pixels
+     * @param h         the height in pixels
+     */
     public Sprite(int textureID, float x, float y, float w, float h) {
         this.textureID = textureID;
         this.x = x;
@@ -56,7 +103,17 @@ public class Sprite {
         this.h = h;
     }
 
-    // Constructor for a tile (with UV)
+    /**
+     * Creates a sprite from a sub-region of a texture (a tile).
+     *
+     * @param textureID the OpenGL texture ID
+     * @param u0        the left UV coordinate
+     * @param v0        the top UV coordinate
+     * @param u1        the right UV coordinate
+     * @param v1        the bottom UV coordinate
+     * @param w         the width in pixels
+     * @param h         the height in pixels
+     */
     public Sprite(int textureID, float u0, float v0, float u1, float v1, float w, float h) {
         this.textureID = textureID;
         this.u0 = u0;
@@ -69,7 +126,17 @@ public class Sprite {
         this.y = 0;
     }
 
-    // Calculate UV for a tile by index
+    /**
+     * Calculates UV coordinates for a tile by its index in a tileset.
+     *
+     * @param textureID the OpenGL texture ID
+     * @param textureW  the total width of the tileset in pixels
+     * @param textureH  the total height of the tileset in pixels
+     * @param tileW     the width of one tile in pixels
+     * @param tileH     the height of one tile in pixels
+     * @param index     the tile index (0-based, left to right, top to bottom)
+     * @return a new {@code Sprite} representing the tile
+     */
     public static Sprite subSurface(int textureID, int textureW, int textureH,
                                     int tileW, int tileH, int index) {
         int tilesPerRow = textureW / tileW;
@@ -84,7 +151,13 @@ public class Sprite {
         return new Sprite(textureID, u0, v0, u1, v1, tileW, tileH);
     }
 
-    // Load a PNG/JPG into a texture, return its ID
+    /**
+     * Loads a PNG or JPG image into an OpenGL texture.
+     *
+     * @param path the file path to the image
+     * @return the OpenGL texture ID
+     * @throws RuntimeException if the image cannot be loaded
+     */
     public static int loadTexture(String path) {
         int texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
@@ -114,7 +187,11 @@ public class Sprite {
         return texID;
     }
 
-    // Draw this sprite
+    /**
+     * Draws this sprite immediately using its own mesh.
+     * <p>
+     * For batched rendering, pass the sprite to {@link SpriteBatch} instead.
+     */
     public void draw() {
         float screenW = Window.getWidth();
         float screenH = Window.getHeight();
@@ -170,13 +247,21 @@ public class Sprite {
         textureShader.bind();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
-        Shader.setUniform1i("uTexture", 0);
+        textureShader.setUniform1i("uTexture", 0);
         mesh.draw();
         mesh.destroy();
         textureShader.unbind();
     }
 
-    // Slice a tileset into a map of sprites by index
+    /**
+     * Slices a tileset image into individual sprites, indexed by tile order.
+     *
+     * @param path  the file path to the tileset image
+     * @param tileW the width of one tile in pixels
+     * @param tileH the height of one tile in pixels
+     * @return a map of tile index to sprite
+     * @throws TextureLoadException if the tileset cannot be loaded
+     */
     public static Map<Integer, Sprite> cutTileSet(String path, int tileW, int tileH) {
         // 1. Load texture and read its size in one go
         int texID = glGenTextures();
@@ -191,7 +276,7 @@ public class Sprite {
 
             ByteBuffer image = STBImage.stbi_load(path, w, h, channels, 4);
             if (image == null) {
-                throw new RuntimeException("Failed to load image " + path);
+                throw new TextureLoadException("Failed to load texture: " + path);
             }
 
             textureW = w.get();
@@ -224,6 +309,16 @@ public class Sprite {
         return tiles;
     }
 
+    /**
+     * Creates a new tileset where every sprite has the given size.
+     * <p>
+     * UV coordinates are preserved, so the texture is stretched to the new size.
+     *
+     * @param tileSet the original tileset
+     * @param tileW   the new tile width in pixels
+     * @param tileH   the new tile height in pixels
+     * @return a new map of scaled sprites
+     */
     public static Map<Integer, Sprite> resizeTileSet(Map<Integer, Sprite> tileSet, int tileW, int tileH) {
         Map<Integer, Sprite> tiles = new HashMap<>();
 
@@ -239,21 +334,104 @@ public class Sprite {
         return tiles;
     }
 
-    // Setters
+    /**
+     * Sets the sprite's position in pixels.
+     *
+     * @param x the new x position
+     * @param y the new y position
+     */
     public void setPosition(float x, float y) { this.x = x; this.y = y; }
+
+    /**
+     * Sets the horizontal and vertical flip flags.
+     *
+     * @param fx whether to flip horizontally
+     * @param fy whether to flip vertically
+     */
     public void flip(boolean fx, boolean fy) { this.flipX = fx; this.flipY = fy; }
+
+    /**
+     * Sets the rotation angle in degrees.
+     *
+     * @param angle the rotation angle
+     */
     public void rotate(float angle) { this.rotation = angle; }
+
+    /**
+     * Sets the sprite's size in pixels.
+     *
+     * @param newW the new width
+     * @param newH the new height
+     */
     public void scale(float newW, float newH) { this.w = newW; this.h = newH; }
 
-    // Getters
+    /**
+     * Returns the OpenGL texture ID.
+     *
+     * @return the texture ID
+     */
     public int getTextureID() { return textureID; }
+
+    /**
+     * Returns the shared shader used by sprites.
+     *
+     * @return the texture shader
+     */
+    public static Shader getTextureShader() { return textureShader; }
+
+    /**
+     * Returns the x position.
+     *
+     * @return the x position
+     */
     public float getX() { return x; }
+
+    /**
+     * Returns the y position.
+     *
+     * @return the y position
+     */
     public float getY() { return y; }
+
+    /**
+     * Returns the width.
+     *
+     * @return the width
+     */
     public float getW() { return w; }
+
+    /**
+     * Returns the height.
+     *
+     * @return the height
+     */
     public float getH() { return h; }
 
+    /**
+     * Returns the top UV coordinate.
+     *
+     * @return the v0 value
+     */
     public float getV0() { return v0; }
+
+    /**
+     * Returns the bottom UV coordinate.
+     *
+     * @return the v1 value
+     */
     public float getV1() { return v1; }
+
+    /**
+     * Returns the left UV coordinate.
+     *
+     * @return the u0 value
+     */
     public float getU0() { return u0; }
+
+    /**
+     * Returns the right UV coordinate.
+     *
+     * @return the u1 value
+     */
     public float getU1() { return u1; }
 }

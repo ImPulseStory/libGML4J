@@ -2,20 +2,19 @@ import org.gradle.internal.os.OperatingSystem
 
 plugins {
     java
-    application
     `maven-publish`
+    signing
+    id("io.github.sgtsilvio.gradle.maven-central-publishing") version "0.5.0"
 }
 
-group = "org.libGML"
+group = "io.github.ImpulseStory"
 version = "0.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
-}
-
-application {
-    mainClass.set("org.example.Main")
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -43,25 +42,19 @@ val lwjglNatives: String by lazy {
     }
 }
 
-tasks.named<JavaExec>("run") {
-    environment("GDK_BACKEND", "x11")
-}
-
 dependencies {
-    // LWJGL BOM for version management
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
 
-    // Core LWJGL modules
     implementation("org.lwjgl:lwjgl")
-    implementation("org.apache.commons:commons-csv:1.12.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     implementation("org.lwjgl:lwjgl-assimp")
     implementation("org.lwjgl:lwjgl-glfw")
     implementation("org.lwjgl:lwjgl-openal")
     implementation("org.lwjgl:lwjgl-opengl")
     implementation("org.lwjgl:lwjgl-stb")
 
-    // Native libraries (platform-specific)
+    implementation("org.apache.commons:commons-csv:1.12.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+
     runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives")
@@ -69,19 +62,59 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives")
 
-    // Testing (optional, but good practice)
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+sourceSets {
+    main {
+        java {
+            exclude("org/examples/**")
+        }
+    }
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-// JAR with manifest (optional, for executable JAR)
 tasks.jar {
     manifest {
-        attributes["Implementation-Title"] = "libGML"
+        attributes["Implementation-Title"] = "libGML4J"
         attributes["Implementation-Version"] = project.version
     }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+
+            pom {
+                name.set("libGML4J")
+                description.set("A lightweight 2D game toolkit for Java")
+                url.set("https://github.com/ImPulseStory/libGML4J")
+
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("ImPulseStory")
+                        name.set("ImPulse")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/ImPulseStory/libGML4J")
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["maven"])
 }
