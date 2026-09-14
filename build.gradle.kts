@@ -116,5 +116,6 @@ publishing {
 }
 
 signing {
+    isRequired = project.hasProperty("signing.keyId")
     sign(publishing.publications["maven"])
 }
