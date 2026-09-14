@@ -118,6 +118,8 @@ Exceptions	Typed exceptions
 MIT License. See LICENSE for details.
 🔗 Links
 
+[![](https://jitpack.io/v/ImPulseStory/libGML4J.svg)](https://jitpack.io/#ImPulseStory/libGML4J)
+
     GitHub: github.com/ImPulseStory/libGML4J
 
     Maven Central: coming soon
