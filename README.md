@@ -1,5 +1,4 @@
 📄 README.md
-markdown
 
 # libGML4J
 
@@ -27,13 +26,10 @@ markdown
 
 ---
 
-markdown
 
 ## 🚀 Installation
 
 ### 📦 Gradle (Kotlin DSL)
-
-**JitPack** — *recommended for now*
 
 ```kotlin
 repositories {
@@ -44,21 +40,20 @@ dependencies {
     implementation("com.github.ImPulseStory:libGML4J:v0.1.0")
 }
 
-Maven Central — coming soon
-kotlin
+Maven Central
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("io.github.ImPulseStory:libgml4j:0.1.0")
+    implementation("io.github.impulsestory:libGML:0.1.0")
 }
+```
 
 📦 Gradle (Groovy DSL)
 
-JitPack — recommended for now
-groovy
+```groovy
 
 repositories {
     maven { url 'https://jitpack.io' }
@@ -68,7 +63,7 @@ dependencies {
     implementation 'com.github.ImPulseStory:libGML4J:v0.1.0'
 }
 
-Maven Central — coming soon
+Maven Central 
 groovy
 
 repositories {
@@ -76,13 +71,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.ImPulseStory:libgml4j:0.1.0'
+    implementation 'io.github.impulsestory:libGML:0.1.0'
 }
-
+```
 📦 Maven
 
-JitPack — recommended for now
-xml
+```xml
 
 <repositories>
     <repository>
@@ -97,18 +91,17 @@ xml
     <version>v0.1.0</version>
 </dependency>
 
-Maven Central — coming soon
-xml
+Maven Central
 
 <dependency>
-    <groupId>io.github.ImPulseStory</groupId>
-    <artifactId>libgml4j</artifactId>
+    <groupId>io.github.impulsestory</groupId>
+    <artifactId>libGML</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
-    ⚠️ Note: libGML4J is not yet published on Maven Central. Until then, please use the JitPack option. This section will be updated after the first Central release.
+
 ⚡ Quick Start
-java
+```java
 
 import org.libGML4J.core.Window;
 import org.libGML4J.graphics.Sprite;
@@ -135,7 +128,7 @@ public class Main {
         Window.destroy();
     }
 }
-
+```
 🧠 Philosophy
 
 libGML4J is not a framework. It does not tell you how to structure your game. It is a toolkit — a set of independent, well-documented tools that you can combine however you want.
