@@ -74,7 +74,7 @@ dependencies {
     implementation 'io.github.impulsestory:libGML:0.1.0'
 }
 ```
-📦 Maven
+📦 POM.xml
 
 ```xml
 
@@ -171,5 +171,3 @@ MIT License. See LICENSE for details.
 [![](https://jitpack.io/v/ImPulseStory/libGML4J.svg)](https://jitpack.io/#ImPulseStory/libGML4J)
 
     GitHub: github.com/ImPulseStory/libGML4J
-
-    Maven Central: coming soon
