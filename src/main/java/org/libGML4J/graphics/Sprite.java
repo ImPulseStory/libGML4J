@@ -2,7 +2,24 @@ package org.libGML4J.graphics;
 
 /*
  * Copyright (c) 2026 ImPulseStory
- * ... (полный текст MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 import org.libGML4J.Exceptions.TextureLoadException;
@@ -169,7 +186,7 @@ public class Sprite {
 
             ByteBuffer image = STBImage.stbi_load(path, w, h, channels, 4);
             if (image == null) {
-                throw new RuntimeException("Failed to load image " + path);
+                throw new TextureLoadException("Failed to load image " + path);
             }
 
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
@@ -187,15 +204,7 @@ public class Sprite {
         return texID;
     }
 
-    /**
-     * Draws this sprite immediately using its own mesh.
-     * <p>
-     * For batched rendering, pass the sprite to {@link SpriteBatch} instead.
-     */
-    public void draw() {
-        float screenW = Window.getWidth();
-        float screenH = Window.getHeight();
-
+    public void draw(float screenW,  float screenH) {
         // Compute final UVs based on flips (without mutating fields)
         float fu0 = flipX ? u1 : u0;
         float fu1 = flipX ? u0 : u1;
@@ -251,6 +260,18 @@ public class Sprite {
         mesh.draw();
         mesh.destroy();
         textureShader.unbind();
+    }
+
+    /**
+     * Draws this sprite immediately using its own mesh.
+     * <p>
+     * For batched rendering, pass the sprite to {@link SpriteBatch} instead.
+     */
+    public void draw() {
+        float screenW = Window.getWidth();
+        float screenH = Window.getHeight();
+
+        draw(screenW, screenH);
     }
 
     /**

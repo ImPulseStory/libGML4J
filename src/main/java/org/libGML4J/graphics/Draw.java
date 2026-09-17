@@ -163,6 +163,95 @@ public class Draw {
         float screenW = Window.getWidth();
         float screenH = Window.getHeight();
 
+        rect(x, y, w, h, r, g, b, screenW, screenH);
+    }
+
+    /**
+     * Draws a filled square (a rectangle with equal width and height).
+     *
+     * @param x    the x position of the top-left corner
+     * @param y    the y position of the top-left corner
+     * @param size the side length in pixels
+     * @param r    the red component (0–255)
+     * @param g    the green component (0–255)
+     * @param b    the blue component (0–255)
+     */
+    public static void square(int x, int y, int size, int r, int g, int b) {
+        rect(x, y, size, size, r, g, b);
+    }
+
+    /**
+     * Draws a filled circle.
+     * <p>
+     * The circle is rendered as a quad with a fragment shader that discards
+     * pixels outside the radius.
+     *
+     * @param x      the x position of the circle's center
+     * @param y      the y position of the circle's center
+     * @param radius the radius in pixels
+     * @param r      the red component (0–255)
+     * @param g      the green component (0–255)
+     * @param b      the blue component (0–255)
+     */
+    public static void circle(float x, float y, float radius, float r, float g, float b) {
+        float screenW = Window.getWidth();
+        float screenH = Window.getHeight();
+        circle(x, y, radius, r, g, b, screenW, screenH);
+    }
+
+    /**
+     * Draws a line with a given thickness.
+     * <p>
+     * The line is rendered as a rotated rectangle (two triangles).
+     *
+     * @param x1        the x position of the start point
+     * @param y1        the y position of the start point
+     * @param x2        the x position of the end point
+     * @param y2        the y position of the end point
+     * @param thickness the line thickness in pixels
+     * @param r         the red component (0–255)
+     * @param g         the green component (0–255)
+     * @param b         the blue component (0–255)
+     */
+    public static void line(float x1, float y1, float x2, float y2, float thickness, float r, float g, float b) {
+        float screenW = Window.getWidth();
+        float screenH = Window.getHeight();
+        line(x1, y1, x2, y2, thickness, r, g, b,  screenW, screenH);
+    }
+
+    /**
+     * Draws a filled triangle from three points.
+     *
+     * @param x1 the x position of the first point
+     * @param y1 the y position of the first point
+     * @param x2 the x position of the second point
+     * @param y2 the y position of the second point
+     * @param x3 the x position of the third point
+     * @param y3 the y position of the third point
+     * @param r  the red component (0–255)
+     * @param g  the green component (0–255)
+     * @param b  the blue component (0–255)
+     */
+    public static void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float r, float g, float b) {
+        float screenW = Window.getWidth();
+        float screenH = Window.getHeight();
+        triangle(x1, y1, x2, y2, x3, y3, r, g, b, screenW, screenH);
+    }
+
+    /**
+     * Draws a filled rectangle.
+     *
+     * @param x the x position of the top-left corner
+     * @param y the y position of the top-left corner
+     * @param w the width in pixels
+     * @param h the height in pixels
+     * @param r the red component (0–255)
+     * @param g the green component (0–255)
+     * @param b the blue component (0–255)
+     * @param screenW   the window width
+     * @param screenH   the window height
+     */
+    public static void rect(int x, int y, int w, int h, int r, int g, int b, float screenW, float screenH) {
         // Color in 0.0..1.0
         float cr = r / 255.0f;
         float cg = g / 255.0f;
@@ -212,9 +301,11 @@ public class Draw {
      * @param r    the red component (0–255)
      * @param g    the green component (0–255)
      * @param b    the blue component (0–255)
+     * @param screenW   the window width
+     * @param screenH   the window height
      */
-    public static void square(int x, int y, int size, int r, int g, int b) {
-        rect(x, y, size, size, r, g, b);
+    public static void square(int x, int y, int size, int r, int g, int b, float screenW, float screenH) {
+        rect(x, y, size, size, r, g, b,  screenW, screenH);
     }
 
     /**
@@ -229,11 +320,10 @@ public class Draw {
      * @param r      the red component (0–255)
      * @param g      the green component (0–255)
      * @param b      the blue component (0–255)
+     * @param screenW   the window width
+     * @param screenH   the window height
      */
-    public static void circle(float x, float y, float radius, float r, float g, float b) {
-        float screenW = Window.getWidth();
-        float screenH = Window.getHeight();
-
+    public static void circle(float x, float y, float radius, float r, float g, float b, float screenW, float screenH) {
         float cr = r / 255.0f;
         float cg = g / 255.0f;
         float cb = b / 255.0f;
@@ -279,11 +369,10 @@ public class Draw {
      * @param r         the red component (0–255)
      * @param g         the green component (0–255)
      * @param b         the blue component (0–255)
+     * @param screenW   the window width
+     * @param screenH   the window height
      */
-    public static void line(float x1, float y1, float x2, float y2, float thickness, float r, float g, float b) {
-        float screenW = Window.getWidth();
-        float screenH = Window.getHeight();
-
+    public static void line(float x1, float y1, float x2, float y2, float thickness, float r, float g, float b, float screenW, float screenH) {
         float cr = r / 255.0f;
         float cg = g / 255.0f;
         float cb = b / 255.0f;
@@ -347,20 +436,19 @@ public class Draw {
     /**
      * Draws a filled triangle from three points.
      *
-     * @param x1 the x position of the first point
-     * @param y1 the y position of the first point
-     * @param x2 the x position of the second point
-     * @param y2 the y position of the second point
-     * @param x3 the x position of the third point
-     * @param y3 the y position of the third point
-     * @param r  the red component (0–255)
-     * @param g  the green component (0–255)
-     * @param b  the blue component (0–255)
+     * @param x1      the x position of the first point
+     * @param y1      the y position of the first point
+     * @param x2      the x position of the second point
+     * @param y2      the y position of the second point
+     * @param x3      the x position of the third point
+     * @param y3      the y position of the third point
+     * @param r       the red component (0–255)
+     * @param g       the green component (0–255)
+     * @param b       the blue component (0–255)
+     * @param screenW the window width
+     * @param screenH the window height
      */
-    public static void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float r, float g, float b) {
-        float screenW = Window.getWidth();
-        float screenH = Window.getHeight();
-
+    public static void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float r, float g, float b, float screenW, float screenH) {
         float cr = r / 255.0f;
         float cg = g / 255.0f;
         float cb = b / 255.0f;

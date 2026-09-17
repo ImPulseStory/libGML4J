@@ -2,7 +2,24 @@ package org.libGML4J.graphics;
 
 /*
  * Copyright (c) 2026 ImPulseStory
- * ... (полный текст MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 import org.libGML4J.core.Window;
@@ -146,8 +163,10 @@ public class SpriteBatch {
      * current batch, the buffer is flushed automatically before adding.
      *
      * @param batch the sprite to add
+     * @param screenWidth the window width
+     * @param screenHeight the window height
      */
-    public void draw(Sprite batch) {
+    public void draw(Sprite batch, float screenWidth, float screenHeight) {
         if (vertexCount + 20 > vertices.length) {
             flush();
         }
@@ -167,9 +186,6 @@ public class SpriteBatch {
         float v0 = batch.getV0();
         float v1 = batch.getV1();
 
-        float screenW = Window.getWidth();
-        float screenH = Window.getHeight();
-
         float px0 = x;
         float py0 = y;
         float px1 = x + w;
@@ -179,17 +195,17 @@ public class SpriteBatch {
         float px3 = x;
         float py3 = y + h;
 
-        float x0 = (px0 / screenW) * 2.0f - 1.0f;
-        float y0 = 1.0f - (py0 / screenH) * 2.0f;
+        float x0 = (px0 / screenWidth) * 2.0f - 1.0f;
+        float y0 = 1.0f - (py0 / screenHeight) * 2.0f;
 
-        float x1 = (px1 / screenW) * 2.0f - 1.0f;
-        float y1 = 1.0f - (py1 / screenH) * 2.0f;
+        float x1 = (px1 / screenWidth) * 2.0f - 1.0f;
+        float y1 = 1.0f - (py1 / screenHeight) * 2.0f;
 
-        float x2 = (px2 / screenW) * 2.0f - 1.0f;
-        float y2 = 1.0f - (py2 / screenH) * 2.0f;
+        float x2 = (px2 / screenWidth) * 2.0f - 1.0f;
+        float y2 = 1.0f - (py2 / screenHeight) * 2.0f;
 
-        float x3 = (px3 / screenW) * 2.0f - 1.0f;
-        float y3 = 1.0f - (py3 / screenH) * 2.0f;
+        float x3 = (px3 / screenWidth) * 2.0f - 1.0f;
+        float y3 = 1.0f - (py3 / screenHeight) * 2.0f;
 
         vertices[vertexCount++] = x0;
         vertices[vertexCount++] = y0;
@@ -222,6 +238,18 @@ public class SpriteBatch {
         indices[indexCount++] = base + 2;
         indices[indexCount++] = base + 3;
         indices[indexCount++] = base + 0;
+    }
+
+    /**
+     * Adds a sprite to the batch.
+     * <p>
+     * If the buffer is full, or if the sprite uses a different texture than the
+     * current batch, the buffer is flushed automatically before adding.
+     *
+     * @param batch the sprite to add
+     */
+    public void draw(Sprite batch) {
+        draw(batch, Window.getWidth(), Window.getHeight());
     }
 
     /**

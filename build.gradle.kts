@@ -7,7 +7,7 @@ plugins {
     id("io.github.sgtsilvio.gradle.maven-central-publishing") version "0.5.0"
 }
 
-group = "io.github.ImpulseStory"
+group = "io.github.impulsestory"
 version = "0.1.0"
 
 java {
