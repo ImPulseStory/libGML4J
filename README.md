@@ -1,5 +1,4 @@
 📄 README.md
-markdown
 
 # libGML4J
 
@@ -27,31 +26,82 @@ markdown
 
 ---
 
+
 ## 🚀 Installation
 
-### Gradle (Kotlin DSL)
+### 📦 Gradle (Kotlin DSL)
+
+```kotlin
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
+dependencies {
+    implementation("com.github.ImPulseStory:libGML4J:v0.1.0")
+}
+
+Maven Central
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("io.github.ImpulseStory:libgml4j:0.1.0")
+    implementation("io.github.impulsestory:libGML:0.1.0")
+}
+```
+
+📦 Gradle (Groovy DSL)
+
+```groovy
+
+repositories {
+    maven { url 'https://jitpack.io' }
 }
 
-Maven
-xml
+dependencies {
+    implementation 'com.github.ImPulseStory:libGML4J:v0.1.0'
+}
+
+Maven Central 
+groovy
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.impulsestory:libGML:0.1.0'
+}
+```
+📦 POM.xml
+
+```xml
+
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 
 <dependency>
-    <groupId>io.github.ImpulseStory</groupId>
-    <artifactId>libgml4j</artifactId>
-    <version>0.1.0</version>
+    <groupId>com.github.ImPulseStory</groupId>
+    <artifactId>libGML4J</artifactId>
+    <version>v0.1.0</version>
 </dependency>
 
-    Note: libGML4J is not yet published. This section will be updated after the first release.
+Maven Central
+
+<dependency>
+    <groupId>io.github.impulsestory</groupId>
+    <artifactId>libGML</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
 
 ⚡ Quick Start
-java
+```java
 
 import org.libGML4J.core.Window;
 import org.libGML4J.graphics.Sprite;
@@ -78,7 +128,7 @@ public class Main {
         Window.destroy();
     }
 }
-
+```
 🧠 Philosophy
 
 libGML4J is not a framework. It does not tell you how to structure your game. It is a toolkit — a set of independent, well-documented tools that you can combine however you want.
@@ -118,6 +168,6 @@ Exceptions	Typed exceptions
 MIT License. See LICENSE for details.
 🔗 Links
 
-    GitHub: github.com/ImPulseStory/libGML4J
+[![](https://jitpack.io/v/ImPulseStory/libGML4J.svg)](https://jitpack.io/#ImPulseStory/libGML4J)
 
-    Maven Central: coming soon
+    GitHub: github.com/ImPulseStory/libGML4J
